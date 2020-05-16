@@ -67,12 +67,13 @@ function deleteCheck(e) {
   if (item.classList[0] === "complete-btn") {
     const todo = item.parentElement;
     todo.classList.toggle("completed");
+    // change its local storage status
+    changeTodoStatus(todo);
   }
 }
 
 function filterTodo(e) {
   const todos = todoList.childNodes;
-  console.log(todos);
   todos.forEach(function (todo) {
     switch (e.target.value) {
       case "all":
@@ -96,7 +97,7 @@ function filterTodo(e) {
   });
 }
 
-function saveLocalTodos(todo) {
+function saveLocalTodos(value) {
   //CHECK---HEY Do I already have thing in there?
   let todos;
   if (localStorage.getItem("todos") === null) {
@@ -104,14 +105,16 @@ function saveLocalTodos(todo) {
   } else {
     todos = JSON.parse(localStorage.getItem("todos"));
   }
+
+  todo = {};
+  todo["value"] = value;
+  todo["status"] = "uncompleted";
 
   todos.push(todo);
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function getTodos() {
-  console.log("hello");
-
   //CHECK---HEY Do I already have thing in there?
   let todos;
   if (localStorage.getItem("todos") === null) {
@@ -119,6 +122,7 @@ function getTodos() {
   } else {
     todos = JSON.parse(localStorage.getItem("todos"));
   }
+
   todos.forEach(function (todo) {
     //Todo DIV
     const todoDiv = document.createElement("div");
@@ -126,9 +130,12 @@ function getTodos() {
 
     //Create LI
     const newTodo = document.createElement("li");
-    newTodo.innerText = todo;
+    newTodo.innerText = todo.value;
     newTodo.classList.add("todo-item");
     todoDiv.appendChild(newTodo);
+    if (todo.status == "completed") {
+      todoDiv.classList.add("completed");
+    }
 
     //CHECK MARK BUTTON
     const completedButton = document.createElement("button");
@@ -155,7 +162,37 @@ function removeLocalTodos(todo) {
   } else {
     todos = JSON.parse(localStorage.getItem("todos"));
   }
-  const todoIndex = todo.children[0].innerText;
-  todos.splice(todos.indexOf(todoIndex), 1);
-  localStorage.setItem("todos", JSON.stringify(todos));
+
+  let clearTodos = [];
+  todos.forEach(function (item) {
+    if (item.value != todo.children[0].innerText) {
+      clearTodos.push(item);
+    }
+  });
+
+  localStorage.setItem("todos", JSON.stringify(clearTodos));
+}
+
+function changeTodoStatus(todo) {
+  let todos;
+  if (localStorage.getItem("todos") === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem("todos"));
+  }
+
+  let clearTodos = [];
+  todos.forEach(function (item) {
+    if (item.value == todo.children[0].innerText) {
+      if (item.status == "completed") {
+        item.status = "uncompleted";
+      } else {
+        item.status = "completed";
+      }
+    }
+
+    clearTodos.push(item);
+  });
+
+  localStorage.setItem("todos", JSON.stringify(clearTodos));
 }
