@@ -15,31 +15,37 @@ header {
   font-size: 1.5rem;
 }
 
-header,
-form {
-  min-height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media only screen and (min-width: 600px) {
+  header,
+  form {
+    min-height: 15vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
-form input,
-form button {
+.todo-input {
   padding: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   border: white;
 }
-form button {
+.todo-button {
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  border: white;
   color: #fda085;
   background: white;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-form button:hover {
+.todo-button:hover {
   background: #fda085;
   color: white;
 }
-
+.row {
+  display: inline-block;
+}
 .todo-container {
   display: flex;
   justify-content: center;
@@ -109,7 +115,7 @@ select {
   color: #ff6f47;
   width: 10rem;
   cursor: pointer;
-  padding: 1rem;
+  padding: 0.9rem;
 }
 .select::after {
   content: "\25BC";
@@ -117,7 +123,7 @@ select {
   background: #ff6f47;
   top: 0;
   right: 0;
-  padding: 1rem;
+  padding: 0.7rem;
   pointer-events: none;
   transition: all 0.3s ease;
 }
@@ -125,4 +131,32 @@ select {
 .select:hover::after {
   background: white;
   color: #ff6f47;
+}
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  /* height: 40px; */
+  background-color: #85c1e9;
+  margin: auto;
+  padding: 30px 10px;
+  color: #0b0e07;
+}
+footer a:visited {
+  color: blue;
+}
+@media only screen and (max-width: 600px) {
+  /* For mobile phones: */
+  footer {
+    padding: 10px;
+  }
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
